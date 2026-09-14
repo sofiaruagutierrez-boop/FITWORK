@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fit Work | Perfil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --accent-green: #00e676;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #2d2d2d;
+            --radius: 15px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 24px 18px 0; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.24); }
+        .avatar { width: 54px; height: 54px; border-radius: 50%; background: rgba(0,230,118,0.16); color: var(--accent-green); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; margin-bottom: 14px; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,230,118,0.12); color: var(--accent-green); padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; margin-bottom: 16px; }
+        h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        p { color: var(--text-secondary); line-height: 1.7; }
+        .grid { display: grid; gap: 16px; margin-top: 20px; }
+        .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .stats { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .stat, .panel { background: rgba(255,255,255,0.035); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .stat strong { display: block; font-size: 22px; color: var(--accent-green); margin-top: 6px; }
+        .panel h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .panel ul { list-style: none; display: grid; gap: 10px; }
+        .panel li { padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.03); color: var(--text-secondary); }
+        .panel li strong { color: var(--text-primary); }
+        .pill { display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px; background: rgba(0,230,118,0.12); color: var(--accent-green); font-size: 12px; font-weight: 700; }
+        @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
+    </style>
+    <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <span class="badge">👤 Perfil</span>
+            <div class="avatar" id="avatar">U</div>
+            <h1 id="user-name">Tu perfil de Fit Work</h1>
+            <p id="user-summary">Aquí verás tu información personal y tu progreso.</p>
+            <div class="grid grid-2">
+                <div class="stats">
+                    <div class="stat">
+                        <span>Desafíos completados</span>
+                        <strong id="completed-count">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span>Puntos acumulados</span>
+                        <strong id="points-count">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span>Racha actual</span>
+                        <strong id="streak-count">0 días</strong>
+                    </div>
+                    <div class="stat">
+                        <span>Próximo reto</span>
+                        <strong id="next-goal">Sin definir</strong>
+                    </div>
+                </div>
+                <div class="panel">
+                    <h3>Tu progreso</h3>
+                    <p id="progress-text">Tu progreso aparecerá aquí.</p>
+                    <span class="pill" id="weekly-goal">Meta semanal: 300 pts</span>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="panel">
+                    <h3>Desafíos disponibles</h3>
+                    <ul id="challenges-list">
+                        <li><strong>Resistencia</strong> — 20 vueltas a la cancha</li>
+                        <li><strong>Fuerza</strong> — Rutina de flexiones y barras</li>
+                        <li><strong>Cardio</strong> — Reto de ritmo y cuerda</li>
+                    </ul>
+                </div>
+                <div class="panel">
+                    <h3>Ranking</h3>
+                    <ul id="ranking-list">
+                        <li><strong>Jerónimo</strong> — 350 pts</li>
+                        <li><strong>Brayan</strong> — 310 pts</li>
+                        <li><strong>Sofía</strong> — 290 pts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠 Inicio</a>
+        <a href="desafios.html#desafios">🎯 Desafíos</a>
+        <a href="ranking.html">🏆 Ranking</a>
+        <a href="perfil.html" class="active">👤 Perfil</a>
+    </nav>
+
+    <script>
+        const STORAGE_KEY = 'fitwork-state';
+        const defaultState = {
+            name: 'Sofía',
+            points: 290,
+            completedCount: 0,
+            streak: 2,
+            nextGoal: 'Resistencia',
+            completedIds: [],
+            ranking: [
+                { name: 'Jerónimo', points: 350 },
+                { name: 'Brayan', points: 310 },
+                { name: 'Sofía', points: 290 }
+            ]
+        };
+
+        function loadState() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) return JSON.parse(stored);
+                const legacy = JSON.parse(localStorage.getItem('fitwork-profile') || '{}');
+                return Object.keys(legacy).length ? {
+                    ...defaultState,
+                    name: legacy.name || defaultState.name,
+                    points: Number(legacy.points || defaultState.points),
+                    completedCount: Number(legacy.completed || defaultState.completedCount)
+                } : { ...defaultState };
+            } catch (error) {
+                return { ...defaultState };
+            }
+        }
+
+        function saveState(state) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        const state = loadState();
+        saveState(state);
+
+        document.getElementById('avatar').textContent = state.name.charAt(0).toUpperCase();
+        document.getElementById('user-name').textContent = `Hola, ${state.name}`;
+        document.getElementById('user-summary').textContent = `Aquí verás tus puntos, tus retos y tu progreso en Fit Work.`;
+        document.getElementById('completed-count').textContent = state.completedIds.length || state.completedCount;
+        document.getElementById('points-count').textContent = state.points;
+        document.getElementById('streak-count').textContent = `${state.streak} días`;
+        document.getElementById('next-goal').textContent = state.nextGoal;
+        document.getElementById('progress-text').textContent = state.points >= 300
+            ? 'Estás muy cerca de tu meta semanal. Sigue así.'
+            : 'Tu progreso está en marcha. Completa más retos para avanzar.';
+
+        const challengesList = document.getElementById('challenges-list');
+        const completedCount = state.completedIds.length || state.completedCount;
+        if (challengesList) {
+            challengesList.innerHTML = `
+                <li><strong>Resistencia</strong> — ${completedCount >= 1 ? 'Completado' : 'Pendiente'}</li>
+                <li><strong>Fuerza</strong> — ${completedCount >= 2 ? 'Completado' : 'Pendiente'}</li>
+                <li><strong>Cardio</strong> — ${completedCount >= 3 ? 'Completado' : 'Pendiente'}</li>
+            `;
+        }
+
+        const rankingList = document.getElementById('ranking-list');
+        if (rankingList) {
+            const sortedRanking = [...state.ranking].sort((a, b) => b.points - a.points);
+            rankingList.innerHTML = sortedRanking.slice(0, 3).map(entry => `<li><strong>${entry.name}</strong> — ${entry.points} pts</li>`).join('');
+        }
+    </script>
+</body>
+</html>

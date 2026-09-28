@@ -66,7 +66,6 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="nav.css">
 </head>
 <body class="bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center h-screen">
 
@@ -105,50 +104,62 @@
 </div>
 
 <script>
-const SUPABASE_URL = "https://snzstwwumoghvfoxfdea.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuenN0d3d1bW9naHZmb3hmZGVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczOTc5MTUsImV4cCI6MjA5Mjk3MzkxNX0.QGbC-WrM7guN0S-KhmQckaNXIQPru1dm227MDhryv4o";
+const SUPABASE_URL = "https://crjtcercspirgzzmzeax.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ULR8jNd9FD7W4Khudk0ebw_kCp_R4fM";
 
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+async function redirectIfAuthenticated() {
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (!error && user) {
+        window.location.href = "panel.html";
+    }
+}
+
 async function login(e) {
     if (e) e.preventDefault();
-    const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
     if (!email || !password) {
-        Swal.fire("Atención", "Por favor ingresa tus credenciales", "warning");
+        Swal.fire("Atención", "Por favor ingresa tu correo y contraseña para continuar.", "warning");
         return;
     }
 
     Swal.fire({
-        title: 'Verificando...',
+        title: 'Verificando credenciales...',
         allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading()
-        }
+        didOpen: () => Swal.showLoading()
     });
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-    });
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
     if (error) {
-        Swal.fire("Error de Acceso", error.message, "error");
+        const message = error.message.includes("Invalid login") || error.message.includes("Invalid")
+            ? "Correo o contraseña incorrectos. Verifica tus datos e intenta nuevamente."
+            : error.message;
+        Swal.fire("Error de acceso", message, "error");
         return;
     }
 
-    const profileData = {
-        name: email.split('@')[0],
-        points: 0,
-        completed: 0,
-        streak: 1,
-        nextGoal: 'Resistencia'
-    };
-    localStorage.setItem('fitwork-profile', JSON.stringify(profileData));
-    window.location.href = "perfil.html";
+    if (!data.user) {
+        Swal.fire("Error de acceso", "No se pudo iniciar sesión. Intenta de nuevo.", "error");
+        return;
+    }
+
+    Swal.fire({
+        title: "¡Bienvenido!",
+        text: "Ingresando al panel principal...",
+        icon: "success",
+        timer: 1000,
+        showConfirmButton: false
+    }).then(() => {
+        window.location.href = "panel.html";
+    });
 }
+
+window.addEventListener("load", redirectIfAuthenticated);
 </script>
 
 </body>

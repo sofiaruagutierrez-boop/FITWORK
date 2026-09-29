@@ -156,10 +156,19 @@
             letter-spacing: 0.02em;
             text-transform: uppercase;
             transition: transform 0.2s ease, background 0.2s ease;
+            cursor: pointer;
         }
         .activity-cta:hover {
             transform: translateY(-1px);
             background: linear-gradient(180deg, rgba(30,215,96,0.18), rgba(30,215,96,0.08));
+        }
+        .activity-cta.done {
+            opacity: 0.55;
+            cursor: default;
+            pointer-events: none;
+            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: var(--muted);
         }
         .bottom-nav {
             position: fixed;
@@ -195,14 +204,16 @@
             .activity-heading { font-size: 1.18rem; }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="container">
-        <div class="brand-pill">S</div>
+        <div class="brand-pill" id="brand-initial">•</div>
         <section class="hero">
             <div>
-                <h1>¡Hola, Sofía! 👋</h1>
-                <p class="hero-status">Puesto en el Ranking: <span>#3 (290 pts)</span></p>
+                <h1 id="hero-name">¡Hola! 👋</h1>
+                <p class="hero-status">Puesto en el Ranking: <span id="hero-rank">Cargando...</span></p>
             </div>
             <p>Elige tu próxima actividad y suma puntos para el Ranking Institucional.</p>
         </section>
@@ -214,70 +225,70 @@
                 <div class="activity-badge">🟢 <span>Dificultad Baja</span> • +20 PTS</div>
                 <h2 class="activity-heading">Clásico de Microfútbol en el Descanso</h2>
                 <p class="activity-subtitle">Arma el partido con tus amigos en el patio. Jugar 10 minutos activa tus reflejos y suma tus primeros puntos.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="futbol10" data-points="20">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🟢 <span>Dificultad Baja</span> • +20 PTS</div>
                 <h2 class="activity-heading">Estiramiento y Yoga Zen</h2>
                 <p class="activity-subtitle">Relaja tus hombros y espalda usando las colchonetas del gimnasio. Ideal para liberar el estrés entre clases.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="yoga_zen" data-points="20">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🟢 <span>Dificultad Baja</span> • +20 PTS</div>
                 <h2 class="activity-heading">Torneo Relámpago de Ping-Pong</h2>
                 <p class="activity-subtitle">Juega una partida rápida en las mesas del colegio. Activa tu concentración y coordinación mano-ojo.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="pingpong" data-points="20">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🟡 <span>Dificultad Media</span> • +50 PTS</div>
                 <h2 class="activity-heading">Trote de Resistencia Base</h2>
                 <p class="activity-subtitle">Completa 10 vueltas seguidas a ritmo constante alrededor de la cancha principal para mejorar tu capacidad cardiovascular.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="trote10" data-points="50">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🟡 <span>Dificultad Media</span> • +50 PTS</div>
                 <h2 class="activity-heading">Reto de Ritmo y Coreografía</h2>
                 <p class="activity-subtitle">Sigue una rutina corta de baile o aeróbicos grupales en el patio durante las jornadas recreativas del proyecto.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="baile" data-points="50">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🟡 <span>Dificultad Media</span> • +50 PTS</div>
                 <h2 class="activity-heading">Minuto de Fuego con Cuerda</h2>
                 <p class="activity-subtitle">Consigue una cuerda en el área de deportes y realiza 3 series de 1 minuto continuo de saltos veloces.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="cuerda3" data-points="50">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🟡 <span>Dificultad Media</span> • +50 PTS</div>
                 <h2 class="activity-heading">Fuerza Abdominal en Colchoneta</h2>
                 <p class="activity-subtitle">Completa una rutina concentrada de 3 series de 20 abdominales cortas en la zona de entrenamiento.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="abs3" data-points="50">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🔴 <span>Dificultad Alta</span> • +100 PTS</div>
                 <h2 class="activity-heading">El Reto Reina: 20 Vueltas a la Cancha</h2>
                 <p class="activity-subtitle">Pon a prueba tu resistencia máxima dando 20 vueltas completas a la cancha grande de fútbol del colegio.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="vueltas20" data-points="100">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🔴 <span>Dificultad Alta</span> • +100 PTS</div>
                 <h2 class="activity-heading">Calistenia Estricta en Barras</h2>
                 <p class="activity-subtitle">Rutina de fuerza pura: Ejecuta 3 series de 8 dominadas o colgadas controladas en las barras del gimnasio.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="barras" data-points="100">¡Completar y Sumar Puntos!</a>
             </article>
 
             <article class="activity-card">
                 <div class="activity-badge">🔴 <span>Dificultad Alta</span> • +100 PTS</div>
                 <h2 class="activity-heading">Potencia Total con Burpees</h2>
                 <p class="activity-subtitle">Completa 3 series intensas de 12 burpees seguidos (flexión, sentadilla y salto) en el menor tiempo posible.</p>
-                <a href="#" class="activity-cta">¡Completar y Sumar Puntos!</a>
+                <a href="#" class="activity-cta" data-id="burpees" data-points="100">¡Completar y Sumar Puntos!</a>
             </article>
         </div>
     </div>
@@ -287,5 +298,160 @@
         <a href="desafios.html" class="active">🎯 Desafíos</a>
         <a href="ranking.html">🏆 Ranking</a>
     </nav>
+
+    <script>
+        const SUPABASE_URL = "https://crjtcercspirgzzmzeax.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ULR8jNd9FD7W4Khudk0ebw_kCp_R4fM";
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let currentUser = null;
+
+        // Título exacto de cada tarjeta, en el mismo orden que aparecen en la página.
+        // Debe coincidir con el "title" guardado en la tabla challenge_def.
+        const CHALLENGE_TITLES = {
+            futbol10: "Clásico de Microfútbol en el Descanso",
+            yoga_zen: "Estiramiento y Yoga Zen",
+            pingpong: "Torneo Relámpago de Ping-Pong",
+            trote10: "Trote de Resistencia Base",
+            baile: "Reto de Ritmo y Coreografía",
+            cuerda3: "Minuto de Fuego con Cuerda",
+            abs3: "Fuerza Abdominal en Colchoneta",
+            vueltas20: "El Reto Reina: 20 Vueltas a la Cancha",
+            barras: "Calistenia Estricta en Barras",
+            burpees: "Potencia Total con Burpees"
+        };
+
+        async function ensureSession() {
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
+            if (error || !user) {
+                window.location.href = "login.html";
+                return null;
+            }
+            return user;
+        }
+
+        async function loadHero(user) {
+            const { data } = await supabaseClient
+                .from("usuario")
+                .select("nombre, puntos, retos_completados")
+                .eq("auth_id", user.id)
+                .maybeSingle();
+
+            const nombre = data?.nombre || user.email || "Usuario";
+            const puntos = data?.puntos ?? 0;
+            const completados = Array.isArray(data?.retos_completados) ? data.retos_completados : [];
+
+            document.getElementById("hero-name").textContent = `¡Hola, ${nombre}! 👋`;
+            document.getElementById("brand-initial").textContent = nombre.charAt(0).toUpperCase();
+
+            // Marca como completadas las tarjetas cuyo título ya está en retos_completados
+            document.querySelectorAll(".activity-cta").forEach(btn => {
+                const title = CHALLENGE_TITLES[btn.dataset.id];
+                if (completados.includes(title)) {
+                    btn.classList.add("done");
+                    btn.textContent = "✓ Reto completado";
+                }
+            });
+
+            await loadRank(user, puntos);
+        }
+
+        async function loadRank(user, myPoints) {
+            const { data: rows, error } = await supabaseClient
+                .from("usuario")
+                .select("auth_id, puntos")
+                .order("puntos", { ascending: false });
+
+            const rankEl = document.getElementById("hero-rank");
+            if (error || !rows) {
+                rankEl.textContent = `${myPoints} pts`;
+                return;
+            }
+            const position = rows.findIndex(r => r.auth_id === user.id) + 1;
+            rankEl.textContent = position > 0
+                ? `#${position} (${myPoints} pts)`
+                : `${myPoints} pts`;
+        }
+
+        async function completeChallenge(btn) {
+            if (!currentUser || btn.classList.contains("done")) return;
+
+            const challengeId = btn.dataset.id;
+            const points = Number(btn.dataset.points);
+            const title = CHALLENGE_TITLES[challengeId];
+
+            btn.classList.add("done");
+            const originalText = btn.textContent;
+            btn.textContent = "Guardando...";
+
+            // 1) Intento principal: función segura en el servidor
+            let awarded = null;
+            const { data: rpcData, error: rpcError } = await supabaseClient
+                .rpc("award_challenge", { challenge_id: challengeId });
+
+            if (!rpcError && rpcData) {
+                awarded = rpcData;
+            } else {
+                // 2) Reserva: actualización directa (solo mientras no haya RLS bloqueando)
+                const { data: userRow } = await supabaseClient
+                    .from("usuario")
+                    .select("id, puntos, retos_completados, progreso")
+                    .eq("auth_id", currentUser.id)
+                    .maybeSingle();
+
+                if (userRow) {
+                    const completados = Array.isArray(userRow.retos_completados) ? userRow.retos_completados : [];
+                    if (completados.includes(title)) {
+                        awarded = { success: false, reason: "already_completed" };
+                    } else {
+                        const nuevosPuntos = (userRow.puntos || 0) + points;
+                        await supabaseClient
+                            .from("usuario")
+                            .update({
+                                puntos: nuevosPuntos,
+                                retos_completados: [...completados, title],
+                                progreso: Math.min(100, (userRow.progreso || 0) + Math.round(points / 10))
+                            })
+                            .eq("id", userRow.id);
+                        awarded = { success: true, awarded: points };
+                    }
+                }
+            }
+
+            if (awarded && awarded.success) {
+                btn.textContent = "✓ Reto completado";
+                Swal.fire({
+                    title: "¡Bien hecho!",
+                    text: `Ganaste ${awarded.awarded ?? points} puntos.`,
+                    icon: "success",
+                    timer: 1400,
+                    showConfirmButton: false
+                });
+                await loadHero(currentUser);
+            } else if (awarded && awarded.reason === "already_completed") {
+                btn.textContent = "✓ Reto completado";
+                Swal.fire("Ya completado", "Este reto ya te había dado puntos antes.", "info");
+            } else {
+                btn.classList.remove("done");
+                btn.textContent = originalText;
+                Swal.fire("Error", "No se pudo guardar el reto. Intenta de nuevo.", "error");
+            }
+        }
+
+        window.addEventListener("load", async () => {
+            currentUser = await ensureSession();
+            if (!currentUser) return;
+
+            document.querySelectorAll(".activity-cta").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    completeChallenge(btn);
+                });
+            });
+
+            await loadHero(currentUser);
+        });
+    </script>
 </body>
 </html>

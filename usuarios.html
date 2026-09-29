@@ -232,24 +232,32 @@ async function checkAuth() {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) {
         window.location.href = "login.html";
-        return;
+        return false;
     }
 
-    // Buscamos el nombre en la tabla 'usuario' vinculada por 'auth_id'
+    // Buscamos el nombre y el rol en la tabla 'usuario' vinculada por 'auth_id'
     const { data: profile } = await supabaseClient
         .from("usuario")
-        .select("nombre")
+        .select("nombre, rol (nombre)")
         .eq("auth_id", user.id)
         .single();
 
-    if (profile) {
-        document.getElementById("user-greeting").innerHTML = `
-            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-            Hola, <span class="text-gray-900 font-bold text-lg">${profile.nombre}</span>
-        `;
-    } else {
-        document.getElementById("user-greeting").innerText = `Conectado como: ${user.email}`;
+    // Solo los administradores pueden ver esta página
+    if (!profile || profile.rol?.nombre !== "Administrador") {
+        await Swal.fire({
+            title: "Acceso restringido",
+            text: "Esta sección es solo para administradores.",
+            icon: "warning"
+        });
+        window.location.href = "panel.html";
+        return false;
     }
+
+    document.getElementById("user-greeting").innerHTML = `
+        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+        Hola, <span class="text-gray-900 font-bold text-lg">${profile.nombre}</span>
+    `;
+    return true;
 }
 
 // CERRAR SESIÓN
@@ -455,7 +463,8 @@ function filtrar() {
 
 // INICIALIZACIÓN
 window.onload = async () => {
-    await checkAuth();
+    const esAdmin = await checkAuth();
+    if (!esAdmin) return;
     Promise.allSettled([getRoles(), getEstados(), getUsuarios()]);
 };
 </script>

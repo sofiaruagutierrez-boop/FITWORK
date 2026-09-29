@@ -30,16 +30,20 @@
         .leaderboard-row.header { background-color: rgba(0, 230, 118, 0.05); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
         .leaderboard-row:last-child { border-bottom: none; }
         .leaderboard-rank { color: var(--accent-green); font-weight: 700; }
+        .leaderboard-row.me { background-color: rgba(0, 230, 118, 0.08); }
+        .leaderboard-row.me .leaderboard-rank { color: #ffffff; }
+        .empty-state { padding: 30px 20px; color: var(--text-secondary); text-align: center; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(18, 18, 18, 0.98); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; gap: 10px; padding: 12px 16px; z-index: 50; }
         .bottom-nav a { color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 700; padding: 10px 14px; border-radius: 15px; background-color: rgba(255, 255, 255, 0.04); transition: all 0.2s ease; }
         .bottom-nav a:hover, .bottom-nav a.active { color: #ffffff; background-color: rgba(0, 230, 118, 0.14); }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
     <div class="container">
         <span class="badge">🏆 Ranking</span>
         <h1 class="page-title">Tabla de posiciones</h1>
-        <p class="page-copy">Top 3 de estudiantes con más puntos por actividades completadas. Ideal para simular datos ordenados desde la base de datos.</p>
+        <p class="page-copy">Top de estudiantes con más puntos por actividades completadas en Fit Work.</p>
 
         <div class="leaderboard-card">
             <div class="leaderboard-row header">
@@ -47,29 +51,66 @@
                 <span>Estudiante</span>
                 <span>Puntos</span>
             </div>
-            <div class="leaderboard-row">
-                <span class="leaderboard-rank">1</span>
-                <span>Jerónimo</span>
-                <span>350 pts</span>
-            </div>
-            <div class="leaderboard-row">
-                <span class="leaderboard-rank">2</span>
-                <span>Brayan</span>
-                <span>310 pts</span>
-            </div>
-            <div class="leaderboard-row">
-                <span class="leaderboard-rank">3</span>
-                <span>Sofía</span>
-                <span>290 pts</span>
+            <div id="leaderboard-body">
+                <div class="empty-state">Cargando ranking...</div>
             </div>
         </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="index.html">Inicio</a>
-        <a href="desafios.html">Desafíos</a>
-        <a href="ranking.html" class="active">Ranking</a>
-        <a href="index.html">Perfil</a>
+        <a href="index.html">🏠 Inicio</a>
+        <a href="desafios.html">🎯 Desafíos</a>
+        <a href="ranking.html" class="active">🏆 Ranking</a>
+        <a href="panel.html">👤 Perfil</a>
     </nav>
+
+    <script>
+        const SUPABASE_URL = "https://crjtcercspirgzzmzeax.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ULR8jNd9FD7W4Khudk0ebw_kCp_R4fM";
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function ensureSession() {
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
+            if (error || !user) {
+                window.location.href = "login.html";
+                return null;
+            }
+            return user;
+        }
+
+        async function loadRanking(currentUser) {
+            const body = document.getElementById("leaderboard-body");
+
+            const { data, error } = await supabaseClient
+                .from("usuario")
+                .select("nombre, email, puntos, auth_id")
+                .order("puntos", { ascending: false })
+                .limit(20);
+
+            if (error || !data || !data.length) {
+                body.innerHTML = '<div class="empty-state">Aún no hay estudiantes con puntos. ¡Sé el primero en completar un reto!</div>';
+                return;
+            }
+
+            body.innerHTML = data.map((row, index) => {
+                const nombre = row.nombre || row.email || "Estudiante";
+                const isMe = row.auth_id === currentUser.id;
+                return `
+                    <div class="leaderboard-row${isMe ? " me" : ""}">
+                        <span class="leaderboard-rank">${index + 1}</span>
+                        <span>${nombre}${isMe ? " (Tú)" : ""}</span>
+                        <span>${row.puntos ?? 0} pts</span>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        window.addEventListener("load", async () => {
+            const user = await ensureSession();
+            if (!user) return;
+            await loadRanking(user);
+        });
+    </script>
 </body>
 </html>

@@ -143,6 +143,16 @@ async function register() {
             throw new Error("No se pudo crear el usuario. Intenta nuevamente.");
         }
 
+        if (!signUpData.session) {
+            await Swal.fire({
+                title: "Confirma tu correo",
+                text: "Te enviamos un enlace de confirmación. Verifica tu correo y luego inicia sesión.",
+                icon: "info"
+            });
+            window.location.href = "login.html";
+            return;
+        }
+
         const profileData = {
             auth_id: user.id,
             nombre,

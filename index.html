@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="nav.css">
     <style>
         * {
             margin: 0;
@@ -170,106 +169,6 @@
         .btn-secondary:hover {
             background-color: rgba(0, 230, 118, 0.1);
             transform: translateY(-2px);
-        }
-
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            z-index: 1000;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-card {
-            width: min(100%, 420px);
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-top: 8px;
-        }
-
-        .modal-close {
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background: #161616;
-            color: var(--text-primary);
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent-green);
-            box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.15);
-        }
-
-        .field-error {
-            min-height: 16px;
-            margin-top: 6px;
-            color: #ff6b6b;
-            font-size: 12px;
-        }
-
-        .modal-actions {
-            margin-top: 8px;
-        }
-
-        .modal-actions .btn {
-            width: 100%;
-        }
-
-        .challenge-button.completed {
-            background: rgba(0, 230, 118, 0.15);
-            color: var(--accent-green);
-            border-color: var(--accent-green);
-            cursor: default;
-            pointer-events: none;
-        }
-
-        .leaderboard-row .leaderboard-rank {
-            font-weight: 700;
         }
 
         /* Hero Grid */
@@ -663,6 +562,38 @@
             color: var(--accent-green);
         }
 
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(18, 18, 18, 0.98);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            z-index: 50;
+        }
+
+        .bottom-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.04);
+            transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        }
+
+        .bottom-nav a:hover {
+            color: #ffffff;
+            background-color: rgba(0, 230, 118, 0.14);
+            transform: translateY(-1px);
+        }
+
         .leaderboard-section {
             margin-top: 48px;
         }
@@ -911,7 +842,7 @@
         }
     </style>
 </head>
-<body id="top">
+<body>
     <div class="max-w-6xl mx-auto px-4">
         <!-- Header -->
         <header>
@@ -920,8 +851,8 @@
                 <h1>Una plataforma moderna para activar tu cuerpo y tu mente</h1>
                 <p>Encuentra rutinas cortas, desafíos diarios y contenido visual inspirador pensado para estudiantes que quieren ejercitarse sin perder el ritmo de sus estudios.</p>
                 <div class="header-cta">
-                    <button type="button" class="btn btn-primary" id="open-login-modal">Iniciar sesión</button>
-                    <button type="button" class="btn btn-secondary" id="open-register-modal">Crear cuenta</button>
+                    <a href="login.html" class="btn btn-primary">Iniciar sesión</a>
+                    <a href="registro.html" class="btn btn-secondary">Crear cuenta</a>
                 </div>
             </div>
             <div class="hero-grid">
@@ -978,7 +909,7 @@
         </section>
 
         <!-- Programas de entrenamiento -->
-        <section class="programs-section" id="programas">
+        <section class="programs-section">
             <h2 class="text-3xl font-bold mb-6">Programas de entrenamiento</h2>
             <div class="programs-grid">
                 <div class="program-card">
@@ -1021,12 +952,12 @@
                 <div class="challenge-card">
                     <div class="challenge-title">🏃 Reto de Resistencia</div>
                     <div class="challenge-description">Realiza 20 vueltas a la cancha de fútbol del colegio en un solo entrenamiento.</div>
-                    <button type="button" class="challenge-button" data-challenge="resistencia" data-points="50">Completar</button>
+                    <a href="#" class="challenge-button">Completar</a>
                 </div>
                 <div class="challenge-card">
                     <div class="challenge-title">💪 Reto de Fuerza</div>
                     <div class="challenge-description">Haz una rutina de flexiones en las barras del gimnasio escolar manteniendo buena técnica.</div>
-                    <button type="button" class="challenge-button" data-challenge="fuerza" data-points="70">Completar</button>
+                    <a href="#" class="challenge-button">Completar</a>
                 </div>
             </div>
         </section>
@@ -1040,20 +971,20 @@
                     <span>Estudiante</span>
                     <span>Puntos</span>
                 </div>
-                <div class="leaderboard-row" data-player="Jerónimo">
+                <div class="leaderboard-row">
                     <span class="leaderboard-rank">1</span>
                     <span>Jerónimo</span>
-                    <span class="leaderboard-points">350 pts</span>
+                    <span>350 pts</span>
                 </div>
-                <div class="leaderboard-row" data-player="Brayan">
+                <div class="leaderboard-row">
                     <span class="leaderboard-rank">2</span>
                     <span>Brayan</span>
-                    <span class="leaderboard-points">310 pts</span>
+                    <span>310 pts</span>
                 </div>
-                <div class="leaderboard-row" data-player="Sofía">
+                <div class="leaderboard-row">
                     <span class="leaderboard-rank">3</span>
                     <span>Sofía</span>
-                    <span class="leaderboard-points">290 pts</span>
+                    <span>290 pts</span>
                 </div>
             </div>
         </section>
@@ -1188,13 +1119,13 @@
             <h2 class="cta-title">¿Listo para transformar tu vida?</h2>
             <p class="cta-description">Únete a miles de estudiantes que ya están mejorando su salud y aumentando su energía con Fit Work. El primer paso comienza hoy.</p>
             <div class="cta-buttons">
-                <button type="button" class="btn btn-primary" data-open-register>Registrarme ahora</button>
-                <button type="button" class="btn btn-secondary" data-open-login>Ya tengo cuenta</button>
+                <a href="registro.html" class="btn btn-primary">Registrarme ahora</a>
+                <a href="login.html" class="btn btn-secondary">Ya tengo cuenta</a>
             </div>
         </section>
 
         <!-- Contacto e Equipo -->
-        <section class="contact-section" id="contacto">
+        <section class="contact-section">
             <div class="contact-card">
                 <div class="contact-header">
                     <div>
@@ -1210,8 +1141,8 @@
                     <div class="contact-item">
                         <span class="contact-item-title">Redes sociales</span>
                         <div class="social-buttons">
-                            <button type="button" class="social-btn social-btn-instagram" data-social-url="https://www.instagram.com/">Instagram</button>
-                            <button type="button" class="social-btn social-btn-tiktok" data-social-url="https://www.tiktok.com/">TikTok</button>
+                            <button class="social-btn social-btn-instagram">Instagram</button>
+                            <button class="social-btn social-btn-tiktok">TikTok</button>
                         </div>
                     </div>
                 </div>
@@ -1228,328 +1159,37 @@
                 <div class="footer-column">
                     <h4>Programa</h4>
                     <div class="footer-links">
-                        <a href="#programas" class="footer-link">Entrenamientos</a>
-                        <a href="#desafios" class="footer-link">Desafíos</a>
-                        <a href="#ranking" class="footer-link">Comunidad</a>
+                        <a href="#" class="footer-link">Entrenamientos</a>
+                        <a href="#" class="footer-link">Desafíos</a>
+                        <a href="#" class="footer-link">Comunidad</a>
                     </div>
                 </div>
                 <div class="footer-column">
                     <h4>Compañía</h4>
                     <div class="footer-links">
-                        <a href="#contacto" class="footer-link">Sobre nosotros</a>
-                        <a href="#contacto" class="footer-link">Contacto</a>
-                        <a href="#top" class="footer-link">Blog</a>
+                        <a href="#" class="footer-link">Sobre nosotros</a>
+                        <a href="#" class="footer-link">Contacto</a>
+                        <a href="#" class="footer-link">Blog</a>
                     </div>
                 </div>
                 <div class="footer-column">
                     <h4>Síguenos</h4>
                     <div class="footer-links">
-                        <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" class="footer-link">Instagram</a>
-                        <a href="https://x.com/" target="_blank" rel="noreferrer" class="footer-link">Twitter</a>
-                        <a href="https://www.youtube.com/" target="_blank" rel="noreferrer" class="footer-link">YouTube</a>
+                        <a href="#" class="footer-link">Instagram</a>
+                        <a href="#" class="footer-link">Twitter</a>
+                        <a href="#" class="footer-link">YouTube</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Fit Work. Todos los derechos reservados. | <a href="#top" class="footer-link">Privacidad</a> | <a href="#top" class="footer-link">Términos</a></p>
+                <p>&copy; 2024 Fit Work. Todos los derechos reservados. | <a href="#" class="footer-link">Privacidad</a> | <a href="#" class="footer-link">Términos</a></p>
             </div>
         </footer>
     </div>
     <nav class="bottom-nav">
-        <a href="index.html" class="active">🏠 Inicio</a>
-        <a href="desafios.html#desafios">🎯 Desafíos</a>
+        <a href="index.html">🏠 Inicio</a>
+        <a href="desafios.html">🎯 Desafíos</a>
         <a href="ranking.html">🏆 Ranking</a>
-        <a href="panel.html">👤 Perfil</a>
     </nav>
-
-    <div class="modal-overlay" id="login-modal" aria-hidden="true">
-        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
-            <div class="modal-header">
-                <div>
-                    <span class="header-badge">🔐 Acceso</span>
-                    <h3 id="login-modal-title">Inicia sesión</h3>
-                </div>
-                <button type="button" class="modal-close" id="close-login-modal" aria-label="Cerrar">✕</button>
-            </div>
-            <form id="login-form" novalidate>
-                <div class="form-group">
-                    <label for="login-email">Correo electrónico</label>
-                    <input id="login-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email">
-                    <p class="field-error" id="email-error"></p>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Contraseña</label>
-                    <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password">
-                    <p class="field-error" id="password-error"></p>
-                </div>
-                <div class="modal-actions">
-                    <button type="submit" class="btn btn-primary">Entrar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="register-modal" aria-hidden="true">
-        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
-            <div class="modal-header">
-                <div>
-                    <span class="header-badge">✨ Crear cuenta</span>
-                    <h3 id="register-modal-title">Únete a Fit Work</h3>
-                </div>
-                <button type="button" class="modal-close" id="close-register-modal" aria-label="Cerrar">✕</button>
-            </div>
-            <form id="register-form" novalidate>
-                <div class="form-group">
-                    <label for="register-name">Nombre completo</label>
-                    <input id="register-name" type="text" placeholder="Tu nombre" autocomplete="name">
-                    <p class="field-error" id="name-error"></p>
-                </div>
-                <div class="form-group">
-                    <label for="register-email">Correo electrónico</label>
-                    <input id="register-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email">
-                    <p class="field-error" id="register-email-error"></p>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Contraseña</label>
-                    <input id="register-password" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
-                    <p class="field-error" id="register-password-error"></p>
-                </div>
-                <div class="form-group">
-                    <label for="register-confirm-password">Confirmar contraseña</label>
-                    <input id="register-confirm-password" type="password" placeholder="Repite tu contraseña" autocomplete="new-password">
-                    <p class="field-error" id="confirm-password-error"></p>
-                </div>
-                <div class="modal-actions">
-                    <button type="submit" class="btn btn-primary">Crear cuenta</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        const loginModal = document.getElementById('login-modal');
-        const registerModal = document.getElementById('register-modal');
-        const openLoginModalButton = document.getElementById('open-login-modal');
-        const openRegisterModalButton = document.getElementById('open-register-modal');
-        const closeLoginModalButton = document.getElementById('close-login-modal');
-        const closeRegisterModalButton = document.getElementById('close-register-modal');
-        const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        const emailInput = document.getElementById('login-email');
-        const passwordInput = document.getElementById('login-password');
-        const emailError = document.getElementById('email-error');
-        const passwordError = document.getElementById('password-error');
-        const registerNameInput = document.getElementById('register-name');
-        const registerEmailInput = document.getElementById('register-email');
-        const registerPasswordInput = document.getElementById('register-password');
-        const registerConfirmPasswordInput = document.getElementById('register-confirm-password');
-        const nameError = document.getElementById('name-error');
-        const registerEmailError = document.getElementById('register-email-error');
-        const registerPasswordError = document.getElementById('register-password-error');
-        const confirmPasswordError = document.getElementById('confirm-password-error');
-
-        function openLoginModal() {
-            closeRegisterModal();
-            loginModal.classList.add('active');
-            loginModal.setAttribute('aria-hidden', 'false');
-            emailInput.focus();
-        }
-
-        function openRegisterModal() {
-            closeLoginModal();
-            registerModal.classList.add('active');
-            registerModal.setAttribute('aria-hidden', 'false');
-            registerNameInput.focus();
-        }
-
-        function closeLoginModal() {
-            loginModal.classList.remove('active');
-            loginModal.setAttribute('aria-hidden', 'true');
-            loginForm.reset();
-            emailError.textContent = '';
-            passwordError.textContent = '';
-        }
-
-        function closeRegisterModal() {
-            registerModal.classList.remove('active');
-            registerModal.setAttribute('aria-hidden', 'true');
-            registerForm.reset();
-            nameError.textContent = '';
-            registerEmailError.textContent = '';
-            registerPasswordError.textContent = '';
-            confirmPasswordError.textContent = '';
-        }
-
-        openLoginModalButton?.addEventListener('click', openLoginModal);
-        openRegisterModalButton?.addEventListener('click', openRegisterModal);
-        closeLoginModalButton?.addEventListener('click', closeLoginModal);
-        closeRegisterModalButton?.addEventListener('click', closeRegisterModal);
-
-        document.querySelectorAll('[data-open-login]').forEach((button) => {
-            button.addEventListener('click', (event) => {
-                event.preventDefault();
-                openLoginModal();
-            });
-        });
-
-        document.querySelectorAll('[data-open-register]').forEach((button) => {
-            button.addEventListener('click', (event) => {
-                event.preventDefault();
-                openRegisterModal();
-            });
-        });
-
-        [loginModal, registerModal].forEach((modal) => {
-            modal?.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    modal === loginModal ? closeLoginModal() : closeRegisterModal();
-                }
-            });
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                if (loginModal.classList.contains('active')) {
-                    closeLoginModal();
-                } else if (registerModal.classList.contains('active')) {
-                    closeRegisterModal();
-                }
-            }
-        });
-
-        loginForm?.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            emailError.textContent = '';
-            passwordError.textContent = '';
-
-            let isValid = true;
-
-            if (!email) {
-                emailError.textContent = 'Ingresa tu correo electrónico.';
-                isValid = false;
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                emailError.textContent = 'Ingresa un correo válido.';
-                isValid = false;
-            }
-
-            if (!password) {
-                passwordError.textContent = 'Ingresa tu contraseña.';
-                isValid = false;
-            }
-
-            if (!isValid) {
-                return;
-            }
-
-            const profileData = {
-                name: emailInput.value.trim().split('@')[0],
-                points: 0,
-                completed: 0,
-                streak: 1,
-                nextGoal: 'Resistencia'
-            };
-            localStorage.setItem('fitwork-profile', JSON.stringify(profileData));
-            window.location.href = 'panel.html';
-        });
-
-        registerForm?.addEventListener('submit', (event) => {
-            event.preventDefault();
-
-            const name = registerNameInput.value.trim();
-            const email = registerEmailInput.value.trim();
-            const password = registerPasswordInput.value.trim();
-            const confirmPassword = registerConfirmPasswordInput.value.trim();
-
-            nameError.textContent = '';
-            registerEmailError.textContent = '';
-            registerPasswordError.textContent = '';
-            confirmPasswordError.textContent = '';
-
-            let isValid = true;
-
-            if (!name) {
-                nameError.textContent = 'Ingresa tu nombre.';
-                isValid = false;
-            }
-
-            if (!email) {
-                registerEmailError.textContent = 'Ingresa tu correo electrónico.';
-                isValid = false;
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                registerEmailError.textContent = 'Ingresa un correo válido.';
-                isValid = false;
-            }
-
-            if (!password) {
-                registerPasswordError.textContent = 'Ingresa una contraseña.';
-                isValid = false;
-            } else if (password.length < 6) {
-                registerPasswordError.textContent = 'La contraseña debe tener al menos 6 caracteres.';
-                isValid = false;
-            }
-
-            if (!confirmPassword) {
-                confirmPasswordError.textContent = 'Confirma tu contraseña.';
-                isValid = false;
-            } else if (password && confirmPassword && password !== confirmPassword) {
-                confirmPasswordError.textContent = 'Las contraseñas no coinciden.';
-                isValid = false;
-            }
-
-            if (!isValid) {
-                return;
-            }
-
-            const profileData = {
-                name: registerNameInput.value.trim(),
-                points: 0,
-                completed: 0,
-                streak: 1,
-                nextGoal: 'Resistencia'
-            };
-            localStorage.setItem('fitwork-profile', JSON.stringify(profileData));
-            alert('¡Registro exitoso! Ya puedes iniciar sesión.');
-            closeRegisterModal();
-        });
-
-        const challengeButtons = document.querySelectorAll('[data-challenge]');
-        const leaderboardRows = Array.from(document.querySelectorAll('.leaderboard-row[data-player]'));
-        const socialButtons = document.querySelectorAll('[data-social-url]');
-
-        challengeButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                if (button.classList.contains('completed')) {
-                    return;
-                }
-
-                const points = Number(button.dataset.points || 0);
-                const playerRow = leaderboardRows.find((row) => row.dataset.player === 'Jerónimo');
-                const currentPoints = Number((playerRow?.querySelector('.leaderboard-points')?.textContent || '0 pts').replace(/[^0-9]/g, ''));
-                const newPoints = currentPoints + points;
-
-                if (playerRow) {
-                    const pointsCell = playerRow.querySelector('.leaderboard-points');
-                    pointsCell.textContent = `${newPoints} pts`;
-                }
-
-                button.classList.add('completed');
-                button.textContent = 'Completado';
-                alert(`¡Desafío completado! Ganaste ${points} puntos.`);
-            });
-        });
-
-        socialButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const url = button.dataset.socialUrl;
-                if (url) {
-                    window.open(url, '_blank', 'noopener,noreferrer');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
